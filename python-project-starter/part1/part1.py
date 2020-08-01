@@ -49,7 +49,7 @@ def calculate_mean(total, num_items):
     Returns:
         An integer representing the mean of the numbers.
     """
-    mean_temp = float(int(total) / int(num_items))
+    mean_temp = float(float(total) / int(num_items))
     return mean_temp
 
 
@@ -71,38 +71,23 @@ if __name__ == "__main__":
 print()
 for key,value in forecast.items():
     if key == "DailyForecasts":
-        # number_of_days = count the number of days available in dailyforecasts
-        number_of_days = (len(value))
-        print(f"{number_of_days} Day Overview")
-        # for all dates in forecast
         dates = []
-        low_temps = []
-        high_temps = []
-        daytime = []
-        day_rain = []
-        nighttime = []
-        night_rain = []
-        # lowest_temp = identify the lowest temp of the forecast
-        # lowest_temp_date = identify the date of the lowest temp
-        # print(f"    The lowest temperature will be {lowest_temp}{DEGREE_SYBMOL}, and will occur on {lowest_temp_date}{convert_date(iso_string)}.")
-        # # highest_temp = identify the highest temp of the forecast
-        # # highest_temp_date = identify the date of the highest temp
-        # print(f"    The highest temperature will be {highest_temp}{DEGREE_SYBMOL}, and will occur on {highest_temp_date}.")
-        # # avg_low_temp = average of low temperatures  calculate_mean(total, num_items)
-        # print(f"    The average low this week is {mean_temp}.")
-        # # avg_high_temp = average of high temperatures  calculate_mean(total, num_items)
-        # print(f"    The average low this week is {calculate_mean(total, num_items)}.")
-        # print()
-        
+        min_temps = []
+        max_temps = []
+
+        # day_temp = {"Date": "Minimum Temperature", "Maximum Temperature",}
+                
         for day in value:
             for key1,data1 in day.items():
                 # for each day in dailyforecast
                 if key1 == "Date":
-                    # d.strftime("%A %d %B %Y") = identify the Day Date Month Year
                     iso_string = data1
-                    dates.append(iso_string)
-                    print(f"-------- {convert_date(iso_string)} --------")
-                # low_temp = identify the day's lowest temp, convert to celcius using function and add symbol
+                    dates.append(convert_date(iso_string))
+
+                    #put date and min temp and max temp into a dictionary to be able to associate them
+
+
+                # min_temp = identify the day's minimum temp, convert to celcius using function and add symbol
                 if key1 == "Temperature":
                     for key2,value2 in data1.items():
                         if key2 == "Minimum":
@@ -110,57 +95,110 @@ for key,value in forecast.items():
                                 if key3 == "Value":
                                     temp_in_farenheit = value3
                                     temp = convert_f_to_c(temp_in_farenheit)
-                                    low_temps.append(format_temperature(temp))
-                                    print(f"Minimum Temperature: {format_temperature(temp)}")
-                # high_temp = identify the day's highest temp, convert to celcius using function and add symbol
+                                    min_temps.append(temp)
+
+                # max_temp = identify the day's maximum temp, convert to celcius using function and add symbol
                     for key2,value2 in data1.items():
                         if key2 == "Maximum":
                             for key3,value3 in value2.items():
                                 if key3 == "Value":
                                     temp_in_farenheit = value3
-                                    # print(value3)
+                                    temp = convert_f_to_c(temp_in_farenheit)
+                                    max_temps.append(temp)
+
+print()
+for key,value in forecast.items():
+    if key == "DailyForecasts":
+        # number_of_days = count the number of days available in dailyforecasts
+        number_of_days = (len(value))
+        print(f"{number_of_days} Day Overview")
+
+# min_temp = identify the lowest temp of the forecast
+# min_temp_date = identify the date of the lowest temp  **** NEED TO WORK THIS OUT YET - VALUE IS INCORRECT (being last item only)
+temp = min(min_temps)
+format_temperature(temp)
+print(f"    The lowest temperature will be {format_temperature(temp)}, and will occur on {convert_date(iso_string)}.")
+
+# max_temp = identify the highest temp of the forecast
+# max_temp_date = identify the date of the highest temp **** NEED TO WORK THIS OUT YET - VALUE IS INCORRECT (being last item only)
+temp = max(max_temps)
+format_temperature(temp)
+print(f"    The highest temperature will be {format_temperature(temp)}, and will occur on {convert_date(iso_string)}.")
+
+# avg_low_temp = average of low temperatures  calculate_mean(total, num_items)
+total = sum(min_temps)
+num_items = (len(min_temps))
+temp = calculate_mean(total, num_items)
+format_temperature(temp)
+print(f"    The average low this week is {format_temperature(temp)}.")
+
+# avg_high_temp = average of high temperatures  calculate_mean(total, num_items)
+total = sum(max_temps)
+num_items = (len(max_temps))
+temp = calculate_mean(total, num_items)
+format_temperature(temp)
+print(f"    The average low this week is {format_temperature(temp)}.")
+
+print()
+
+for key,value in forecast.items():
+    if key == "DailyForecasts":
+        # for all dates in forecast
+        dates = []
+        min_temps = []
+        max_temps = []
+        
+        for day in value:
+            for key1,data1 in day.items():
+                # for each day in dailyforecast
+                if key1 == "Date":
+                    iso_string = data1
+                    dates.append(convert_date(iso_string))
+                    print(f"-------- {convert_date(iso_string)} --------")
+
+                # min_temp = identify the day's minimum temp, convert to celcius using function and add symbol
+                if key1 == "Temperature":
+                    for key2,value2 in data1.items():
+                        if key2 == "Minimum":
+                            for key3,value3 in value2.items():
+                                if key3 == "Value":
+                                    temp_in_farenheit = value3
+                                    temp = convert_f_to_c(temp_in_farenheit)
+                                    print(f"Minimum Temperature: {format_temperature(temp)}")
+
+                # max_temp = identify the day's maximum temp, convert to celcius using function and add symbol
+                    for key2,value2 in data1.items():
+                        if key2 == "Maximum":
+                            for key3,value3 in value2.items():
+                                if key3 == "Value":
+                                    temp_in_farenheit = value3
                                     temp = convert_f_to_c(temp_in_farenheit)
                                     print(f"Maximum Temperature: {format_temperature(temp)}")
+
                 # day_weather = identify text description of the day's weather
                 if key1 == "Day":
                     for key2,value2 in data1.items():
                         if key2 == "LongPhrase":
                             print(f"Daytime: {value2}")
+
                 # day_rain = identify the chance of daytime rain
                     for key2,value2 in data1.items():
                         if key2 == "RainProbability":
-                            print(f"    Chance of rain: {value2:>2}%")
+                            print(f"    Chance of rain: {value2:>3}%")
+
                 # night_weather = identify text description of the night's weather
                 if key1 == "Night":
                     for key2,value2 in data1.items():
                         if key2 == "LongPhrase":
                             print(f"Nighttime: {value2}")
+
                 # night_rain = identify the chance of nighttime rain
                     for key2,value2 in data1.items():
                             if key2 == "RainProbability":
-                                print(f"    Chance of rain: {value2:>2}%")
+                                print(f"    Chance of rain: {value2:>3}%")
                                 print()
 
 
-        print(low_temps)
-        total = sum(low_temps)
-        num_items = (len(low_temps))
-        calculate_mean(total, num_items)
-        format_temperature(temp)
-        print(calculate_mean(total, num_items))
-
-print()
-print()
-
-print(dates)
-print(low_temps)
-print(high_temps)
-print(daytime)
-print(day_rain)
-print(nighttime)
-print(night_rain)
-
-## DETAILS BELOW ARE FORMAT FOR OUTPUT ##
 
 
 
