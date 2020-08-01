@@ -37,6 +37,7 @@ def convert_f_to_c(temp_in_farenheit):
         An integer representing a temperature in degrees celcius.
     """
     temp = float((float(temp_in_farenheit) - 32) * 5/9)
+    temp = round(temp,1)
     return temp
 
 
@@ -50,6 +51,7 @@ def calculate_mean(total, num_items):
         An integer representing the mean of the numbers.
     """
     mean_temp = float(float(total) / int(num_items))
+    mean_temp = round(mean_temp,1)
     return mean_temp
 
 
@@ -64,8 +66,13 @@ def process_weather(forecast_file):
     """
     pass
 
+# DIDN'T UNDERSTAND WHAT THIS WAS FOR AT THE BEGINNING...IF I GET TIME I WILL COME
+# BACK TO THIS AND WRITE THE DATA OUT TO A TEXT FILE AND THEN READ IT BACK IN
+# TO COMPLETE THE CALCULATIONS FOR LOWEST/HIGHEST/AVERAGE SENTENCES
 if __name__ == "__main__":
     process_weather("data/forecast_5days_a.json")
+    # process_weather("data/forecast_5days_b.json")
+    # process_weather("data/forecast_8days.json")
 
 
 print()
@@ -92,6 +99,7 @@ for key,value in forecast.items():
                                 if key3 == "Value":
                                     temp_in_farenheit = value3
                                     temp = convert_f_to_c(temp_in_farenheit)
+                                    temp = round(temp,1)
                                     min_temps.append(temp)
                                     #put temperature and the date into a dictionary to be able to associate them
                                     temp_date[temp] = convert_date(iso_string)
@@ -103,6 +111,7 @@ for key,value in forecast.items():
                                 if key3 == "Value":
                                     temp_in_farenheit = value3
                                     temp = convert_f_to_c(temp_in_farenheit)
+                                    temp = round(temp,1)
                                     max_temps.append(temp)
                                     #put temperature and the date into a dictionary to be able to associate them
                                     temp_date[temp] = convert_date(iso_string)
@@ -115,7 +124,7 @@ for key,value in forecast.items():
         # number_of_days = count the number of days available in dailyforecasts
         number_of_days = (len(value))
         print(f"{number_of_days} Day Overview")
-        
+
 # min_temp = identify the lowest temp of the forecast
 temp = min(min_temps)
 # min_temp_date = identify the date of the lowest temp 
