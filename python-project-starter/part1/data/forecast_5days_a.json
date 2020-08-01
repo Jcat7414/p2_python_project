@@ -10,7 +10,7 @@
     "MobileLink": "http://m.accuweather.com/en/au/perth/26797/extended-weather-forecast/26797?lang=en-us",
     "Link": "http://www.accuweather.com/en/au/perth/26797/daily-weather-forecast/26797?lang=en-us"
   },
-  "DailyForecasts": [
+  "DailyForecasts": [  
     {
       "Date": "2020-06-19T07:00:00+08:00",
       "EpochDate": 1592521200,
