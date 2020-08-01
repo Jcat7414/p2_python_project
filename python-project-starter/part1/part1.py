@@ -34,7 +34,7 @@ def convert_f_to_c(temp_in_farenheit):
     Args:
         temp_in_farenheit: integer representing a temperature.
     Returns:
-        An integer (?? SHOULD THIS BE FLOAT) representing a temperature in degrees celcius.
+        An integer representing a temperature in degrees celcius.
     """
     temp = float((float(temp_in_farenheit) - 32) * 5/9)
     return temp
@@ -75,7 +75,7 @@ for key,value in forecast.items():
         min_temps = []
         max_temps = []
 
-        # day_temp = {"Date": "Minimum Temperature", "Maximum Temperature",}
+        temp_date = {}
                 
         for day in value:
             for key1,data1 in day.items():
@@ -83,9 +83,6 @@ for key,value in forecast.items():
                 if key1 == "Date":
                     iso_string = data1
                     dates.append(convert_date(iso_string))
-
-                    #put date and min temp and max temp into a dictionary to be able to associate them
-
 
                 # min_temp = identify the day's minimum temp, convert to celcius using function and add symbol
                 if key1 == "Temperature":
@@ -96,6 +93,8 @@ for key,value in forecast.items():
                                     temp_in_farenheit = value3
                                     temp = convert_f_to_c(temp_in_farenheit)
                                     min_temps.append(temp)
+                                    #put temperature and the date into a dictionary to be able to associate them
+                                    temp_date[temp] = convert_date(iso_string)
 
                 # max_temp = identify the day's maximum temp, convert to celcius using function and add symbol
                     for key2,value2 in data1.items():
@@ -105,6 +104,10 @@ for key,value in forecast.items():
                                     temp_in_farenheit = value3
                                     temp = convert_f_to_c(temp_in_farenheit)
                                     max_temps.append(temp)
+                                    #put temperature and the date into a dictionary to be able to associate them
+                                    temp_date[temp] = convert_date(iso_string)
+
+
 
 print()
 for key,value in forecast.items():
@@ -112,18 +115,22 @@ for key,value in forecast.items():
         # number_of_days = count the number of days available in dailyforecasts
         number_of_days = (len(value))
         print(f"{number_of_days} Day Overview")
-
+        
 # min_temp = identify the lowest temp of the forecast
-# min_temp_date = identify the date of the lowest temp  **** NEED TO WORK THIS OUT YET - VALUE IS INCORRECT (being last item only)
 temp = min(min_temps)
-format_temperature(temp)
-print(f"    The lowest temperature will be {format_temperature(temp)}, and will occur on {convert_date(iso_string)}.")
+# min_temp_date = identify the date of the lowest temp 
+for temperature,date in temp_date.items():
+    if temperature == temp:
+        format_temperature(temp)
+        print(f"    The lowest temperature will be {format_temperature(temp)}, and will occur on {date}.")
 
 # max_temp = identify the highest temp of the forecast
-# max_temp_date = identify the date of the highest temp **** NEED TO WORK THIS OUT YET - VALUE IS INCORRECT (being last item only)
 temp = max(max_temps)
-format_temperature(temp)
-print(f"    The highest temperature will be {format_temperature(temp)}, and will occur on {convert_date(iso_string)}.")
+# max_temp_date = identify the date of the highest temp **** NEED TO WORK THIS OUT YET - VALUE IS INCORRECT (being last item only)
+for temperature,date in temp_date.items():
+    if temperature == temp:
+        format_temperature(temp)
+        print(f"    The highest temperature will be {format_temperature(temp)}, and will occur on {date}.")
 
 # avg_low_temp = average of low temperatures  calculate_mean(total, num_items)
 total = sum(min_temps)
