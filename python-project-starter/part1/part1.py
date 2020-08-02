@@ -1,9 +1,6 @@
 import json
 from datetime import datetime
 
-with open("data/forecast_5days_a.json") as json_file:
-    forecast = json.load(json_file)
-
 DEGREE_SYBMOL = u"\N{DEGREE SIGN}C"
 
 def format_temperature(temp):
@@ -64,121 +61,24 @@ def process_weather(forecast_file):
     Returns:
         A string containing the processed and formatted weather data.
     """
-    # with open(forecast_file) as json_file:
-    #     forecast_file = json.load(json_file)
+    with open(forecast_file) as json_file:
+        forecast = json.load(json_file)
 
-    forecast_output = []
-    with open("forecast_output.txt") as txt_file:
-        for line in txt_file:
-            line = line.strip()
-            forecast_output.append(line)
-
-    return forecast_output
-
-    
-print()
-for key,value in forecast.items():
-    if key == "DailyForecasts":
-        dates = []
-        min_temps = []
-        max_temps = []
-
-        temp_date = {}
-                
-        for day in value:
-            for key1,data1 in day.items():
-                # for each day in dailyforecast
-                if key1 == "Date":
-                    iso_string = data1
-                    dates.append(convert_date(iso_string))
-
-                # min_temp = identify the day's minimum temp, convert to celcius using function and add symbol
-                if key1 == "Temperature":
-                    for key2,value2 in data1.items():
-                        if key2 == "Minimum":
-                            for key3,value3 in value2.items():
-                                if key3 == "Value":
-                                    temp_in_farenheit = value3
-                                    temp = convert_f_to_c(temp_in_farenheit)
-                                    temp = round(temp,1)
-                                    min_temps.append(temp)
-                                    #put temperature and the date into a dictionary to be able to associate them
-                                    temp_date[temp] = convert_date(iso_string)
-
-                # max_temp = identify the day's maximum temp, convert to celcius using function and add symbol
-                    for key2,value2 in data1.items():
-                        if key2 == "Maximum":
-                            for key3,value3 in value2.items():
-                                if key3 == "Value":
-                                    temp_in_farenheit = value3
-                                    temp = convert_f_to_c(temp_in_farenheit)
-                                    temp = round(temp,1)
-                                    max_temps.append(temp)
-                                    #put temperature and the date into a dictionary to be able to associate them
-                                    temp_date[temp] = convert_date(iso_string)
-
-print()
-with open("forecast_output.txt", "w") as txt_file:
-
-    for key,value in forecast.items():
-        if key == "DailyForecasts":
-            # number_of_days = count the number of days available in dailyforecasts
-            number_of_days = (len(value))
-            print(f"{number_of_days} Day Overview")
-            txt_file.write(f"{number_of_days} Day Overview" + "\n")
-
-    # min_temp = identify the lowest temp of the forecast
-    temp = min(min_temps)
-    # min_temp_date = identify the date of the lowest temp 
-    for temperature,date in temp_date.items():
-        if temperature == temp:
-            format_temperature(temp)
-            print(f"    The lowest temperature will be {format_temperature(temp)}, and will occur on {date}.")
-            txt_file.write(f"    The lowest temperature will be {format_temperature(temp)}, and will occur on {date}." + "\n")
-
-    # max_temp = identify the highest temp of the forecast
-    temp = max(max_temps)
-    # max_temp_date = identify the date of the highest temp *** THERE ARE 2 THE SAME, MINE IS RETURNING THE 'OTHER DATE'
-    for temperature,date in temp_date.items():
-        if temperature == temp:
-            format_temperature(temp)
-            print(f"    The highest temperature will be {format_temperature(temp)}, and will occur on {date}.")
-            txt_file.write(f"    The highest temperature will be {format_temperature(temp)}, and will occur on {date}." + "\n")
-
-    # avg_low_temp = average of low temperatures  calculate_mean(total, num_items)
-    total = sum(min_temps)
-    num_items = (len(min_temps))
-    temp = calculate_mean(total, num_items)
-    format_temperature(temp)
-    print(f"    The average low this week is {format_temperature(temp)}.")
-    txt_file.write(f"    The average low this week is {format_temperature(temp)}." + "\n")
-
-    # avg_high_temp = average of high temperatures  calculate_mean(total, num_items)
-    total = sum(max_temps)
-    num_items = (len(max_temps))
-    temp = calculate_mean(total, num_items)
-    format_temperature(temp)
-    print(f"    The average low this week is {format_temperature(temp)}.")
-    txt_file.write(f"    The average low this week is {format_temperature(temp)}." + "\n")
-
+    output = ""
+   
     print()
-    txt_file.write("\n")
-
     for key,value in forecast.items():
         if key == "DailyForecasts":
-            # for all dates in forecast
             dates = []
             min_temps = []
             max_temps = []
-            
+
             for day in value:
                 for key1,data1 in day.items():
                     # for each day in dailyforecast
                     if key1 == "Date":
                         iso_string = data1
                         dates.append(convert_date(iso_string))
-                        print(f"-------- {convert_date(iso_string)} --------")
-                        txt_file.write(f"-------- {convert_date(iso_string)} --------" + "\n")
 
                     # min_temp = identify the day's minimum temp, convert to celcius using function and add symbol
                     if key1 == "Temperature":
@@ -188,8 +88,8 @@ with open("forecast_output.txt", "w") as txt_file:
                                     if key3 == "Value":
                                         temp_in_farenheit = value3
                                         temp = convert_f_to_c(temp_in_farenheit)
-                                        print(f"Minimum Temperature: {format_temperature(temp)}")
-                                        txt_file.write(f"Minimum Temperature: {format_temperature(temp)}" + "\n")
+                                        temp = round(temp,1)
+                                        min_temps.append(temp)
 
                     # max_temp = identify the day's maximum temp, convert to celcius using function and add symbol
                         for key2,value2 in data1.items():
@@ -198,42 +98,126 @@ with open("forecast_output.txt", "w") as txt_file:
                                     if key3 == "Value":
                                         temp_in_farenheit = value3
                                         temp = convert_f_to_c(temp_in_farenheit)
-                                        print(f"Maximum Temperature: {format_temperature(temp)}")
-                                        txt_file.write(f"Maximum Temperature: {format_temperature(temp)}" + "\n")
+                                        temp = round(temp,1)
+                                        max_temps.append(temp)
 
-                    # day_weather = identify text description of the day's weather
-                    if key1 == "Day":
-                        for key2,value2 in data1.items():
-                            if key2 == "LongPhrase":
-                                print(f"Daytime: {value2}")
-                                txt_file.write(f"Daytime: {value2}" + "\n")
+    with open("forecast_output.txt", "w") as txt_file:
 
-                    # day_rain = identify the chance of daytime rain
-                        for key2,value2 in data1.items():
-                            if key2 == "RainProbability":
-                                print(f"    Chance of rain: {value2:>3}%")
-                                txt_file.write(f"    Chance of rain: {value2:>3}%" + "\n")
+        for key,value in forecast.items():
+            if key == "DailyForecasts":
+                # number_of_days = count the number of days available in dailyforecasts
+                number_of_days = (len(value))
+                output += f"{number_of_days} Day Overview\n"
+                txt_file.write(f"{number_of_days} Day Overview" + "\n")
 
-                    # night_weather = identify text description of the night's weather
-                    if key1 == "Night":
-                        for key2,value2 in data1.items():
-                            if key2 == "LongPhrase":
-                                print(f"Nighttime: {value2}")
-                                txt_file.write(f"Nighttime: {value2}" + "\n")
+        # min_temp = identify the lowest temp of the forecast
+        # temp = min(min_temps)
+        temp = min(min_temps)
+        minpos = min_temps.index(min(min_temps))
+        # min_temp_date = identify the date of the lowest temp 
+        min_temp_date = dates[minpos]
+        format_temperature(temp)
+        output += f"    The lowest temperature will be {format_temperature(temp)}, and will occur on {min_temp_date}.\n"
+        txt_file.write(f"    The lowest temperature will be {format_temperature(temp)}, and will occur on {min_temp_date}." + "\n")
 
-                    # night_rain = identify the chance of nighttime rain
-                        for key2,value2 in data1.items():
+        # max_temp = identify the highest temp of the forecast
+        # temp = max(max_temps)
+        temp = max(max_temps)
+        maxpos = max_temps.index(max(max_temps))
+        # max_temp_date = identify the date of the highest temp *** THERE ARE 2 THE SAME, MINE IS RETURNING THE 'OTHER DATE'
+        max_temp_date = dates[maxpos]
+        format_temperature(temp)
+        output += f"    The highest temperature will be {format_temperature(temp)}, and will occur on {max_temp_date}.\n"
+        txt_file.write(f"    The highest temperature will be {format_temperature(temp)}, and will occur on {max_temp_date}." + "\n")
+
+        # avg_low_temp = average of low temperatures  calculate_mean(total, num_items)
+        total = sum(min_temps)
+        num_items = (len(min_temps))
+        temp = calculate_mean(total, num_items)
+        format_temperature(temp)
+        output += f"    The average low this week is {format_temperature(temp)}.\n"
+        txt_file.write(f"    The average low this week is {format_temperature(temp)}." + "\n")
+
+        # avg_high_temp = average of high temperatures  calculate_mean(total, num_items)
+        total = sum(max_temps)
+        num_items = (len(max_temps))
+        temp = calculate_mean(total, num_items)
+        format_temperature(temp)
+        output += f"    The average high this week is {format_temperature(temp)}.\n"
+        txt_file.write(f"    The average high this week is {format_temperature(temp)}." + "\n")
+
+        output += "\n"
+        txt_file.write("\n")
+
+        for key,value in forecast.items():
+            if key == "DailyForecasts":
+                # for all dates in forecast
+                dates = []
+                min_temps = []
+                max_temps = []
+                
+                for day in value:
+                    for key1,data1 in day.items():
+                        # for each day in dailyforecast
+                        if key1 == "Date":
+                            iso_string = data1
+                            dates.append(convert_date(iso_string))
+                            output += f"-------- {convert_date(iso_string)} --------\n"
+                            txt_file.write(f"-------- {convert_date(iso_string)} --------" + "\n")
+
+                        # min_temp = identify the day's minimum temp, convert to celcius using function and add symbol
+                        if key1 == "Temperature":
+                            for key2,value2 in data1.items():
+                                if key2 == "Minimum":
+                                    for key3,value3 in value2.items():
+                                        if key3 == "Value":
+                                            temp_in_farenheit = value3
+                                            temp = convert_f_to_c(temp_in_farenheit)
+                                            output += f"Minimum Temperature: {format_temperature(temp)}\n"
+                                            txt_file.write(f"Minimum Temperature: {format_temperature(temp)}" + "\n")
+
+                        # max_temp = identify the day's maximum temp, convert to celcius using function and add symbol
+                            for key2,value2 in data1.items():
+                                if key2 == "Maximum":
+                                    for key3,value3 in value2.items():
+                                        if key3 == "Value":
+                                            temp_in_farenheit = value3
+                                            temp = convert_f_to_c(temp_in_farenheit)
+                                            output += f"Maximum Temperature: {format_temperature(temp)}\n"
+                                            txt_file.write(f"Maximum Temperature: {format_temperature(temp)}" + "\n")
+
+                        # day_weather = identify text description of the day's weather
+                        if key1 == "Day":
+                            for key2,value2 in data1.items():
+                                if key2 == "LongPhrase":
+                                    output += f"Daytime: {value2}\n"
+                                    txt_file.write(f"Daytime: {value2}" + "\n")
+
+                        # day_rain = identify the chance of daytime rain
+                            for key2,value2 in data1.items():
                                 if key2 == "RainProbability":
-                                    print(f"    Chance of rain: {value2:>3}%")
-                                    txt_file.write(f"    Chance of rain: {value2:>3}%" + "\n")
-                                    print()
-                                    txt_file.write("\n")
+                                    output += f"    Chance of rain:  {value2:>1}%\n"
+                                    txt_file.write(f"    Chance of rain:  {value2:>1}%" + "\n")
 
+                        # night_weather = identify text description of the night's weather
+                        if key1 == "Night":
+                            for key2,value2 in data1.items():
+                                if key2 == "LongPhrase":
+                                    output += f"Nighttime: {value2}\n"
+                                    txt_file.write(f"Nighttime: {value2}" + "\n")
+
+                        # night_rain = identify the chance of nighttime rain
+                            for key2,value2 in data1.items():
+                                    if key2 == "RainProbability":
+                                        output += f"    Chance of rain:  {value2:>1}%\n"
+                                        txt_file.write(f"    Chance of rain:  {value2:>1}%" + "\n")
+                                        output += "\n"
+                                        txt_file.write("\n")
+
+    return output
 
 if __name__ == "__main__":
-    process_weather("data/forecast_5days_a.json")
-    # process_weather("data/forecast_5days_b.json")
-    # process_weather("data/forecast_8days.json")
+    print(process_weather("data/forecast_5days_a.json"))
 
 
 
