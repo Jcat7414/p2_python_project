@@ -67,20 +67,15 @@ def process_weather(forecast_file):
     # with open(forecast_file) as json_file:
     #     forecast_file = json.load(json_file)
 
+    forecast_output = []
     with open("forecast_output.txt") as txt_file:
         for line in txt_file:
-            forecast_output = line.strip()
-            
+            line = line.strip()
+            forecast_output.append(line)
+
     return forecast_output
 
-    # DON'T UNDERSTAND THIS PART. THINK PERHAPS IT NEEDS TO BE AT THE END, WITH ALL OF MY CODE INSIDE,
-    # BUT I HAVE TRIED THAT AND IT DIDN'T WORK. ALSO, CONFUSED ABOUT THE TEST REFERENCE TO A TEXT FILE
-    # return ???WHAT txt_file.read()
-    # pass
-
-
-
-
+    
 print()
 for key,value in forecast.items():
     if key == "DailyForecasts":
@@ -143,7 +138,7 @@ with open("forecast_output.txt", "w") as txt_file:
 
     # max_temp = identify the highest temp of the forecast
     temp = max(max_temps)
-    # max_temp_date = identify the date of the highest temp **** NEED TO WORK THIS OUT YET - VALUE IS INCORRECT (being last item only)
+    # max_temp_date = identify the date of the highest temp *** THERE ARE 2 THE SAME, MINE IS RETURNING THE 'OTHER DATE'
     for temperature,date in temp_date.items():
         if temperature == temp:
             format_temperature(temp)
@@ -234,11 +229,11 @@ with open("forecast_output.txt", "w") as txt_file:
                                     print()
                                     txt_file.write("\n")
 
-    # return forecast
 
 if __name__ == "__main__":
     process_weather("data/forecast_5days_a.json")
-
+    # process_weather("data/forecast_5days_b.json")
+    # process_weather("data/forecast_8days.json")
 
 
 
