@@ -40,38 +40,13 @@ def convert_time(iso_string):
     return d.strftime("%H:%M%p")
 
 
-def calculate_mean(total, num_items):
-    """Calculates the mean.
+# with open("data/historical_24hours_a.json") as json_file:
+#     summary = json.load(json_file)
 
-    Args:
-        total: integer representing the sum of the numbers.
-        num_items: integer representing the number of items counted.
-    Returns:
-        An integer representing the mean of the numbers.
-    """
-    mean_temp = float(float(total) / int(num_items))
-    mean_temp = round(mean_temp,1)
-    return mean_temp
+    
 
 
-# def process_weather(summary_file):
-#     """Converts raw weather data into meaningful text.
-
-#     Args:
-#         summary_file: A string representing the file path to a file
-#             containing raw weather data.
-#     Returns:
-#         A string containing the processed and formatted weather data.
-#     """
-with open("data/historical_24hours_a.json") as json_file:
-    summary = json.load(json_file)
-
-    with open("day_summary.txt", "w") as txt_file:
-
-        print(f"==========  A Summary of Weather Activity  ==========\n")
-        txt_file.write(f"==========  A Summary of Weather Activity  ==========\n")
-
-# for key,value in forecast.items():
+# for key,value in summary.items():
 #         if key == "DailyForecasts":
 #             dates = []
 #             min_temps = []
@@ -224,39 +199,78 @@ with open("data/historical_24hours_a.json") as json_file:
 
 # GRAPH DATA BELOW HERE - FUNCTIONING CORRECTLY - DO NOT AMEND
 
-# with open("data/historical_24hours_a.json") as json_file:
-#     summary = json.load(json_file)
+with open("data/historical_24hours_a.json") as json_file:
+    summary = json.load(json_file)
 
-# date = []
-# times = []
-# temps = []
-# real_feels = []
-# weather_text = []
+with open("day_summary.txt", "w") as txt_file:
 
-# for item in summary:
-#     iso_string = (item["LocalObservationDateTime"])  
-#     print(convert_date(iso_string))
-#     date.append(convert_date(iso_string))
-#     print(convert_time(iso_string)) 
-#     times.append(convert_time(iso_string))
+    print(f"==========  A Summary of Weather Activity  ==========\n")
+    txt_file.write(f"==========  A Summary of Weather Activity  ==========\n")
 
-#     temp = (item["Temperature"]["Metric"]["Value"])
-#     print(temp)
-#     temps.append(temp)
 
-#     real_feel = (item["RealFeelTemperature"]["Metric"]["Value"])
-#     print(real_feel)
-#     real_feels.append(real_feel)
+date = []
+times = []
+temps = []
+real_feels = []
+weather_text = []
 
-#     weathertext = (item["WeatherText"])
-#     print(weathertext)
-#     weather_text.append(weathertext)
 
-# print(date)
-# print(times)
-# print(temps)
-# print(real_feels)
-# print(weather_text)
+for item in summary:
+    iso_string = (item["LocalObservationDateTime"])  
+    print(convert_date(iso_string))
+    date.append(convert_date(iso_string))
+    print(convert_time(iso_string)) 
+    times.append(convert_time(iso_string))
+
+    temp = (item["Temperature"]["Metric"]["Value"])
+    print(temp)
+    temps.append(temp)
+
+    real_feel = (item["RealFeelTemperature"]["Metric"]["Value"])
+    print(real_feel)
+    real_feels.append(real_feel)
+
+    weathertext = (item["WeatherText"])
+    print(weathertext)
+    weather_text.append(weathertext)
+
+
+    # when the minimum and maximum temperatures occured
+    # identify TemperatureSummary-Past24HourRange-Minimum-Metric-Value  
+    for index,item in enumerate(summary):
+        if index == 0: 
+            min_temp_24 = (item["TemperatureSummary"]["Past24HourRange"]["Minimum"]["Metric"]["Value"])
+            print(min_temp_24)
+            # and if equal to Temperature-Metric-Value show LocalObservationDateTime
+    for temp in temps:
+        if temp == min_temp_24:
+            min_match = temp.index(temps)
+            time = times[min_match]
+            print(time)
+    # identify TemperatureSummary-Past24HourRange-Maximum-Metric-Value and if equal to Temperature-Metric-Value show LocalObservationDateTime 
+        if index == 0: 
+            max_temp_24 = (item["TemperatureSummary"]["Past24HourRange"]["Maximum"]["Metric"]["Value"])
+            print(max_temp_24)
+# the amount of precipitation that fell in the 24 hours
+# identify PrecipitationSummary-Past24Hours-Metric-Value of the latest LocalObservationDateTime
+
+# the number of hours that precipitation was recorded for
+#  count HasPrecipitation = true
+
+# the number of daylight hours in the past 24 hours
+#  count of IsDayTime = true
+
+#  the maximum UV index, and what hour(s) this occured
+# identify max UVIndex and corresponding LocalObservationDateTime (s)
+
+#  txt_file.write(f"    The lowest temperature will be {format_temperature(temp)}, and will occur on {min_temp_date}." + "\n")
+
+
+print(date)
+print(times)
+print(temps)
+print(real_feels)
+print(weather_text)
 
 # df = {
 #     "Date": (date),
