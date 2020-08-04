@@ -1,1 +1,6 @@
 ==========  A Summary of Weather Activity  ==========
+
+The minimum temperature was 16.1°C and last occured at 23:55PM.
+The maximum temperature was 21.1°C and last occured at 13:55PM.
+
+The amount of precipitation that fell in the last 24 hours was 0.5mm.
