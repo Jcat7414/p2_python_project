@@ -1,6 +1,13 @@
 ==========  A Summary of Weather Activity  ==========
 
-The minimum temperature was 16.1°C and last occured at 23:55PM.
-The maximum temperature was 21.1°C and last occured at 13:55PM.
+The minimum temperature was 16.1°C.
+The minimum temperature was recorded at 23:55PM, 22:55PM, 21:55PM and 20:55PM.
+
+The maximum temperature was 21.1°C.
+The maximum temperature was recorded at 13:55PM, 11:55AM and 16:55PM.
 
 The amount of precipitation that fell in the last 24 hours was 0.5mm.
+Precipitation has been recorded in 2 of the past 24 hours.
+
+There were 10 hours of daylight in the past 24 hours.
+The maximum UV Index recorded was 3. This recording was received at 13:55PM, 12:55PM and 11:55AM.
